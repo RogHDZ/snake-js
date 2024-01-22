@@ -7,7 +7,21 @@ ctx.fillRect(50, 30, 20, 20);
 ctx.font = "25px Serif";
 ctx.fillText("🔥", 100, 100);
 
-const snake = [];
+let posX = 0;
+let posY = 1;
+
+let direction = 1;
+
+const bgSound = new Audio('./powerful-beat-121791.mp3');
+const eating = new Audio('./toink-8bit-84481.mp3');
+
+function init(){
+    posX = 2;
+    posY = 1;
+    direction = 1;
+    bgSound.play();
+
+    const snake = [];
 const head = {
     x: 2,
     y: 1,
@@ -37,6 +51,8 @@ snake.push({
         ctx.fillText("💎", this.x * 20, this.y * 20);
     }
 })
+return snake;
+}
 
 function nextMove(){
     snake.forEach((item, index) => {
@@ -72,10 +88,18 @@ function checkEat(){
     }
 }
 
-let posX = 0;
-let posY = 1;
 
-let direction = 1;
+
+function gameOver(){
+    for(let i = 1; i < snake.length; i++){
+        if(snake[0].x === snake[i].x && snake[0].y === snake[i].y){
+            return true;
+        }
+    }
+    return false;
+}
+
+let snake = init();
 
 food.random();
 setInterval(() => {
@@ -87,6 +111,11 @@ setInterval(() => {
     snake.forEach(item => item.pinta());
 
     checkEat();
+
+    if(gameOver()){
+        console.log('Lose!!!');
+        snake = init();
+        }
 
     if(direction === 1) posX++;
     else if(direction === 2)posY++;
